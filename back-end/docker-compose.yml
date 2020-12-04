@@ -2,6 +2,7 @@ version: "3" ## especifica a versão do docker-compose file
 
 services: ## Define um serviço
   app: ## nome do serviço
+    image: node:alpine
     build: . ## localização do dockerfile
     command: ash -c "yarn typeorm migration:run && yarn dev:server"
       # - yarn dev:server ## comando a executar
