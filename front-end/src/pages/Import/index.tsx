@@ -22,33 +22,29 @@ const Import: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<FileProps[]>([]);
   const history = useHistory();
 
-  async function handleUpload(): Promise<void> {
+  async function submitFile(): Promise<void> {
     const data = new FormData();
 
+    if (!uploadedFiles.length) return;
+
+    data.append('file', uploadedFiles[0].file, uploadedFiles[0].name);
+
     try {
-
-      for (const file of uploadedFiles ) {
-        data.set('file', file.file, file.name);
-
-        await api.post('/transactions/import', data);
-
-      }
+      await api.post('/transactions/import', data);
+      history.push('/');
     } catch (err) {
       console.log(err.response.error);
     }
   }
 
-  function submitFile(files: File[]): void {
-    const loadedFiles: FileProps[] = files.map( file => {
-      return {
-        file,
-        name: file.name,
-        readableSize: filesize(file.size),
-      }
-    })
+  function handleUpload(files: File[]): void {
+    const uploadFiles = files.map((file: File) => ({
+      file,
+      name: file.name,
+      readableSize: filesize(file.size),
+    }));
 
-    setUploadedFiles(loadedFiles);
-
+    setUploadedFiles(uploadFiles);
   }
 
   return (
@@ -57,15 +53,15 @@ const Import: React.FC = () => {
       <Container>
         <Title>Importar uma transação</Title>
         <ImportFileContainer>
-          <Upload onUpload={submitFile} />
-        {!!uploadedFiles.length && <FileList files={uploadedFiles} />}
+          <Upload onUpload={handleUpload} />
+          {!!uploadedFiles.length && <FileList files={uploadedFiles} />}
 
           <Footer>
             <p>
               <img src={alert} alt="Alert" />
               Permitido apenas arquivos CSV
             </p>
-            <button onClick={handleUpload} type="button">
+            <button onClick={submitFile} type="button">
               Enviar
             </button>
           </Footer>
