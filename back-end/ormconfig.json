@@ -2,9 +2,9 @@
   "type": "postgres",
   "host": "db",
   "port": 5432,
-  "username": "sdtrab",
-  "password": "sdtrab",
-  "database": "sd-postgres",
+  "username": "nodePostgres",
+  "password": "docker",
+  "database": "finances",
   "entities": ["./src/models/*.ts"],
   "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
