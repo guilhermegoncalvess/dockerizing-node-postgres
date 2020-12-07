@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:12
 
 WORKDIR /usr/app
 
@@ -10,5 +10,4 @@ RUN yarn add ts-node-dev --dev
 COPY . .
 
 EXPOSE 3333
-
 # CMD ["yarn", "start"]
