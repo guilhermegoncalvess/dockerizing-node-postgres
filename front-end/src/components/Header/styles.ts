@@ -24,7 +24,8 @@ export const Container = styled.div<ContainerProps>`
         transition: opacity 0.2s;
 
         & + a {
-          margin-left: 32px;
+          right: 0;
+          /* margin-left: 58rem; */
         }
 
         &:hover {

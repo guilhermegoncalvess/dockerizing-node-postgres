@@ -7,6 +7,7 @@ import Transaction from '../models/Transaction';
 import Category from '../models/Category';
 
 interface Request {
+  user_id: string;
   title: string;
   type: 'income' | 'outcome';
   value: number;
@@ -15,6 +16,7 @@ interface Request {
 
 class CreateTransactionService {
   public async execute({
+    user_id,
     title,
     value,
     type,
@@ -44,6 +46,7 @@ class CreateTransactionService {
     }
 
     const transaction = transactionsRepository.create({
+      user_id,
       title,
       value,
       type,

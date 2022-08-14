@@ -6,7 +6,8 @@ import {
 } from 'typeorm';
 
 export default class AddCategoryIdToTransactions1587158018269
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       'transactions',

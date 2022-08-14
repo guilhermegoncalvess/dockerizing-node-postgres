@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import income from '../../assets/income.svg';
 import outcome from '../../assets/outcome.svg';
@@ -11,6 +12,7 @@ import Header from '../../components/Header';
 import formatValue from '../../utils/formatValue';
 
 import { Container, CardContainer, Card, TableContainer } from './styles';
+import { isAuthenticated } from '../Login/isAuthenticated';
 
 interface Transaction {
   id: string;
@@ -32,34 +34,42 @@ interface Balance {
 const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
+  const history = useHistory();
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const response = await api.get('/transactions');
+      const storage = localStorage.getItem('@finances/authenticated');
+      console.log(storage);
 
-      const transactiosFormatted = response.data.transactions.map(
-        (transaction: Transaction) => ({
-          ...transaction,
-          formattedValue: formatValue(transaction.value),
-          formattedDate: new Date(transaction.created_at).toLocaleDateString(
-            'pt-br',
-          ),
-        }),
-      );
+      if (storage) {
+        const { id } = JSON.parse(storage);
+        const response = await api.get(`/transactions/${id}`);
 
-      setTransactions(transactiosFormatted);
+        const transactiosFormatted = response.data.transactions.map(
+          (transaction: Transaction) => ({
+            ...transaction,
+            formattedValue: formatValue(transaction.value),
+            formattedDate: new Date(transaction.created_at).toLocaleDateString(
+              'pt-br',
+            ),
+          }),
+        );
 
-      const balanceFormatted = {
-        income: formatValue(response.data.balance.income),
-        outcome: formatValue(response.data.balance.outcome),
-        total: formatValue(response.data.balance.total),
-      };
+        setTransactions(transactiosFormatted);
 
-      setBalance(balanceFormatted);
+        const balanceFormatted = {
+          income: formatValue(response.data.balance.income),
+          outcome: formatValue(response.data.balance.outcome),
+          total: formatValue(response.data.balance.total),
+        };
+
+        setBalance(balanceFormatted);
+      }
     }
-
     loadTransactions();
-  }, []);
+
+    isAuthenticated(history);
+  }, [history]);
 
   return (
     <>

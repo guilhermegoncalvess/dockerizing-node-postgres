@@ -1,10 +1,10 @@
 {
   "type": "postgres",
-  "host": "db",
-  "port": 5432,
-  "username": "nodePostgres",
-  "password": "docker",
-  "database": "finances",
+  "host": "localhost",
+  "port": 5433,
+  "username": "postgres",
+  "password": "finances",
+  "database": "postgres",
   "entities": ["./src/models/*.ts"],
   "migrations": ["./src/database/migrations/*.ts"],
   "cli": {

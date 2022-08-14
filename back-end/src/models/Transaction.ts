@@ -16,6 +16,9 @@ class Transaction {
   id: string;
 
   @Column()
+  user_id: string;
+
+  @Column()
   title: string;
 
   @Column()
