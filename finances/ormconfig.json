@@ -1,6 +1,6 @@
 {
   "type": "postgres",
-  "host": "db",
+  "host": "db-finances",
   "port": 5432,
   "username": "nodePostgres",
   "password": "docker",
